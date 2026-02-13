@@ -38,7 +38,7 @@ const displayLeason = (leasons) => {
     for (const leason of leasons){
         const btnDiv = document.createElement("div");
         btnDiv.innerHTML = `
-        <button class="btn btn-outline btn-primary" onclick="loadLevelWord(${leason.level_no})"> Leason ${leason.level_no} </button>
+        <button class="btn btn-outline btn-primary" onClick="loadLevelWord(${leason.level_no})"> Leason ${leason.level_no} </button>
         `
         levelContainer.append(btnDiv);
     }
