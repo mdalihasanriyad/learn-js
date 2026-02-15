@@ -22,6 +22,42 @@ const loadLevelWord = (id) => {
     })
 }
 
+const loadWordDetails = async (id) => {
+    const url = `https://openapi.programming-hero.com/api/word/${id}`;  
+    const response = await fetch(url)
+    const details = await response.json();
+    displayWordDetails(details.data);}
+
+const displayWordDetails = (word) => {
+    console.log(word);
+    const wordDetailsContainer = document.getElementById("details-container");
+    wordDetailsContainer.innerHTML =`<div>
+    <div class="">
+        <h2 class="text-2xl font-bold">${word.word}(  <i class="fa-solid-microphone-lines"></i> : ${word.pronunciation ? word.pronunciation : "Pronunciation not available"} )
+        </h2>
+      </div>
+      <div class="">
+        <h2>Meaning
+        </h2>
+        <p class="font-bangla text-2xl">${word.meaning}</p>
+      </div>
+      <div class="">
+        <h2>pronunciation
+        </h2>
+        <p class="font-bangla text-2xl">${word.pronunciation ? word.pronunciation : "Pronunciation not available"}</p>
+      </div>
+      <div class="">
+        <h2>synonyms
+        </h2>
+        <span class="btn">${word.synonyms ? word.synonyms[0] : "No synonyms available"}</span>
+        <span class="btn">${word.synonyms ? word.synonyms[1] : "No synonyms available"}</span>
+        <span class="btn">${word.synonyms ? word.synonyms[2] : "No synonyms available"}</span>
+      </div>
+    </div>`;
+    document.getElementById("word_modal").showModal();
+
+}   
+
 
 const displayLevelWord = (words) => {
     const levelWordContainer = document.getElementById("level-word-container");
@@ -45,8 +81,8 @@ const displayLevelWord = (words) => {
            <p class="font-semibold text-xl my-4 ">Meaning /Pronounciation</p>
           <h3 class="font-bangla text-2xl ">"${word.meaning ? word.meaning : "Meaning not available"} / ${word.pronunciation ? word.pronunciation : "Pronunciation not available"}"</h3>
            <div class="flex item-center  justify-between gap-6 p-4 ">
-             <button class="btn btn-primary">Previous</button>
-             <button class="btn btn-primary">Next</button>
+             <button onclick="loadWordDetails('${word.id}')" class="btn btn-primary"><i class="fa-solid fa-circle-info"></i></button>
+             <button onclick="my_modal_5.showModal()" class="btn btn-primary"><i class="fa-solid fa-volume-high"></i></button>
            </div>
        </div>
         `
