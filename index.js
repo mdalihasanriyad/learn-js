@@ -3,11 +3,23 @@ const learnLeason = () => {
     .then(response => response.json())
     .then(json => displayLeason(json.data))}
 
+const removeActiveClass = () => {
+    const allBtn = document.getElementsByClassName("btn-primary");
+    for (const btn of allBtn) {
+        btn.classList.remove("btn-active");
+    }
+}
+
 const loadLevelWord = (id) => {
     const url =`https://openapi.programming-hero.com/api/level/${id}`;
     fetch(url)    
     .then(response => response.json())
-    .then(json => displayLevelWord(json.data));
+    .then(json => {
+        removeActiveClass();
+        const clickBtn= document.getElementById(`level-btn-${id}`);
+        clickBtn.classList.add("btn-active");
+        displayLevelWord(json.data);
+    })
 }
 
 
@@ -29,9 +41,9 @@ const displayLevelWord = (words) => {
         const cart = document.createElement("div");
         cart.innerHTML=`
         <div class="bg-white shadow-xl rounded-xl text-center py-10 space-x-4  gap-8">
-           <h2 class="text-2xl font-bold ">${word.word}</h2>
+           <h2 class="text-2xl font-bold ">${word.word ? word.word : "শব্দ পাওয়া যায় নি"}</h2>
            <p class="font-semibold text-xl my-4 ">Meaning /Pronounciation</p>
-          <h3 class="font-bangla text-2xl ">"${word.meaning} / ${word.pronunciation}"</h3>
+          <h3 class="font-bangla text-2xl ">"${word.meaning ? word.meaning : "Meaning not available"} / ${word.pronunciation ? word.pronunciation : "Pronunciation not available"}"</h3>
            <div class="flex item-center  justify-between gap-6 p-4 ">
              <button class="btn btn-primary">Previous</button>
              <button class="btn btn-primary">Next</button>
@@ -49,7 +61,7 @@ const displayLeason = (leasons) => {
     for (const leason of leasons){
         const btnDiv = document.createElement("div");
         btnDiv.innerHTML = `
-        <button class="btn btn-outline btn-primary" onClick="loadLevelWord(${leason.level_no})"> Leason ${leason.level_no} </button>
+        <button id="level-btn-${leason.level_no}" class="btn btn-outline btn-primary" onClick="loadLevelWord(${leason.level_no})"> Leason ${leason.level_no} </button>
         `
         levelContainer.append(btnDiv);
     }
